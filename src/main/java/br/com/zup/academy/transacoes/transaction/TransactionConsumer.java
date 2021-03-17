@@ -23,15 +23,8 @@ public class TransactionConsumer {
 
     @Transactional
     @KafkaListener(topics = "${transactions.topic}", groupId = "${spring.kafka.consumer.group-id}")
-    public void consumer(final ConsumerRecord consumerRecord) {
-        System.out.println("key: " + consumerRecord.key());
-        System.out.println("Headers: " + consumerRecord.headers());
-        System.out.println("Partion: " + consumerRecord.partition());
-
-        Transacao transacao = (Transacao) consumerRecord.value();
-
-        transacao = manager.merge(transacao);
-
-        System.out.println("Transaction: " + transacao.toString(mapper));
+    public void consumer(final Transacao transacao) {
+        Transacao tr = manager.merge(transacao);
+        System.out.println("Transaction: " + tr.toString(mapper));
     }
 }
